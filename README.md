@@ -555,7 +555,7 @@ Used parameters: {'max_depth': 50, 'min_samples_split': 2, 'n_estimators': 100}
 A tree plot shows the structure of the decision trees used in the random forest. It can be used to understand how the model makes predictions.
 
 <div style="text-align:center">
-<img src="figures/Random Forest/tree_plot.png" alt="Random Forest tree_plot" width="500" height="400">
+<img src="figures/Random Forest/tree_plot.png" alt="Random Forest tree_plot" width="1000" height="1000">
 </div>
 
 ```python
@@ -570,13 +570,13 @@ We can see that the `Weight` feature reduces the impurity the most, followed by 
 
 >> For more information on the Gini value, read the [Gini Value in a Random Forest Tree Plot](#gini-value-in-a-random-forest-tree-plot) section in the appendix.
 
-#### Interactions between features
+##### Interactions between features
 
 The plot can show how different features interact with each other to make predictions. For example, if two features are highly correlated, the plot can show whether the random forest is consistently using one feature over the other or if it's using both in combination.
 
 We can notice that the random forest is consistently using the `Weight` feature in the top levels and begin using a combination of the `Weight` and `Height` features in the lower levels. This indicates that the two features are highly correlated and that the random forest is using both features in combination to make predictions.
 
-#### Overfitting
+##### Overfitting
 
 The plot can show whether the random forest is overfitting the training data. Overfitting can be identified if there are many shallow trees (i.e., with few splits) in the forest, indicating that the model is not capturing the underlying patterns in the data.
 
