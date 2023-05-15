@@ -36,11 +36,24 @@
         - [Train-Validation Curve](#train-validation-curve-1)
       - [Bias-variance Analysis](#bias-variance-analysis-1)
       - [Decision Boundary Plot](#decision-boundary-plot-1)
+    - [Random Forest](#random-forest)
+      - [Feature Importance Plot](#feature-importance-plot-2)
+      - [Learning Curves Plot](#learning-curves-plot-2)
+      - [Partial Dependence Plot](#partial-dependence-plot-2)
+      - [Hyperparameter Tuning](#hyperparameter-tuning-2)
+        - [Grid Search](#grid-search-2)
+        - [Train-Validation Curve](#train-validation-curve-2)
+      - [Bias-variance Analysis](#bias-variance-analysis-2)
+      - [Tree Plot](#tree-plot)
+        - [Variable importance](#variable-importance)
+      - [Interactions between features](#interactions-between-features)
+      - [Overfitting](#overfitting)
   - [Conclusion](#conclusion)
   - [Appendix](#appendix)
     - [Regularization](#regularization)
     - [Logistic Regression Parameters](#logistic-regression-parameters)
     - [The C parameter and the maximum-a-posterior Estimation](#the-c-parameter-and-the-maximum-a-posterior-estimation)
+    - [Gini Value in a Random Forest Tree Plot](#gini-value-in-a-random-forest-tree-plot)
     - [Bias-variance Tradeoff](#bias-variance-tradeoff)
 
 ## Problem and Dataset Description
@@ -189,7 +202,7 @@ show the training error (Ein) and validation error (Eval) as a function of the t
 
 <!-- TODO: Add the used params -->
 
-The learning curves plot shows that the model is slightly overfitting the training data. The training error is lower than the validation error, which means that the model is not generalizing well to unseen data. This is a common problem with logistic regression models, and it can be addressed by using regularization techniques such as regularization as shown in the [Regularization](#regularization) section in the Appendix.
+The learning curves plot shows that the model is slightly overfitting the training data. The training error is lower than the validation error, which means that the model is not generalizing well to unseen data. This is a common problem with logistic regression models, and it can be addressed by using some techniques such as regularization as shown in the [Regularization](#regularization) section in the Appendix.
 
 #### Partial Dependence Plot
 
@@ -305,7 +318,7 @@ show the training error (Ein) and validation error (Eval) as a function of the t
 
 <!-- TODO: Add the used params -->
 
-The learning curves plot shows that the model is slightly overfitting the training data. The training error is lower than the validation error, which means that the model is not generalizing well to unseen data. This is a common problem with logistic regression models, and it can be addressed by using regularization techniques such as regularization as shown in the [Regularization](#regularization) section in the Appendix.
+The learning curves plot shows that the model is slightly overfitting the training data. The training error is lower than the validation error, which means that the model is not generalizing well to unseen data. This is a common problem with logistic regression models, and it can be addressed by using some techniques such as regularization as shown in the [Regularization](#regularization) section in the Appendix.
 
 #### Partial Dependence Plot
 
@@ -381,6 +394,146 @@ This is plot shows the decision boundary of the model. It can help visualize how
 <!-- TODO: Add the used params -->
 
 <!-- TODO: Add a comment on this part -->
+
+### Random Forest
+
+Random Forest is a popular machine learning algorithm that falls under the category of ensemble learning methods. It is a type of decision tree algorithm that generates multiple decision trees and combines their predictions to produce the final output.
+
+- Advantages of Random Forest:
+  - High accuracy: Random Forest has a high accuracy rate due to the combination of multiple decision trees.
+  - Robustness: It is robust to outliers and noise in the dataset.
+  - Feature importance: Random Forest provides a measure of feature importance, which can be useful for feature selection and interpretation.
+  - Scalability: It is able to handle large datasets and can be parallelized for faster processing.
+  - Low risk of overfitting: The combination of multiple decision trees reduces the risk of overfitting and increases generalization.
+
+- Disadvantages of Random Forest:
+  - Lack of interpretability: Random Forest models are often difficult to interpret due to their complexity and the number of decision trees.
+  - Computationally expensive: The training and prediction process of Random Forest can be computationally expensive, especially for large datasets.
+  - Memory usage: The memory usage of Random Forest can be high due to the number of decision trees.
+  - Biased towards the majority class: Random Forest can be biased towards the majority class in imbalanced datasets, leading to lower accuracy for the minority class.
+<!-- Explain ensample learning -->
+
+#### Feature Importance Plot
+
+A feature importance plot shows the importance of each feature in the model. It can be used to identify the most important features and to understand the impact of each feature on the model's predictions.
+
+<div style="text-align:center">
+<img src="figures/Random Forest/feature_importance.png" alt="Random Forest feature_importance" width="500" height="400">
+</div>
+
+Based on the feature importance graph, it seems that `Weight` has a much higher importance compared to `Height` for the Random Forest model. In fact, `Weight` accounts for approximately 80.8% of the importance, while "Height" only accounts for 19.2%.
+
+There are a few possible explanations for this. First, `Weight` is a more direct measure of body level than `Height`. Second,  `Weight` is more variable than `Height`, which means that it have a greater impact on the outcome variable.
+
+#### Learning Curves Plot
+
+show the training error (Ein) and validation error (Eval) as a function of the training set size
+
+<div style="text-align:center">
+<img src="figures/Random Forest/learning_curve.png" alt="Random Forest Learning Curves Plot" width="500" height="400">
+</div>
+
+<!-- TODO: Add the used params -->
+
+The learning curves plot shows that the model is slightly overfitting the training data. The training error is lower than the validation error, which means that the model is not generalizing well to unseen data. This is a common problem with Random Forest models, and it can be addressed by using some techniques such as regularization as shown in the [Regularization](#regularization) section in the Appendix.
+
+However, things is different in random forest than the support vector machine and the logistic regression. We can do regularization by setting the `max_depth` and/or `min_samples_leaf` parameters.
+
+- `max_depth` specifies the maximum depth of the decision trees in the forest. By limiting the depth, the model becomes less complex and is less likely to overfit the training data. You can set a maximum depth value by passing an integer to the `max_depth` parameter. For example, to set the maximum depth to 5, you can do the following:
+
+- `min_samples_leaf` specifies the minimum number of samples required to be at a leaf node. By increasing this value, the model becomes less complex and is less likely to overfit the training data. You can set the minimum number of samples required to be at a leaf node by passing an integer to the `min_samples_leaf` parameter. For example, to set the minimum number of samples at a leaf node to 10, you can do the following:
+
+Note that these regularization techniques are not guaranteed to prevent overfitting in all cases, and you may need to experiment with different values to find the optimal settings for your specific problem. Additionally, other techniques such as cross-validation can be used to evaluate the performance of the model and help prevent overfitting.
+
+#### Partial Dependence Plot
+
+A partial dependence plot shows the relationship between a feature and the model's predictions while holding all other features constant. It can be used to understand the impact of a single feature on the model's predictions i.e. PDPs show the average effect on predictions as the value of feature changes.
+
+<div style="text-align:center">
+<img src="figures/Random Forest/partial_dependencies.png" alt="Partial Dependence Plot" width="1000" height="400">
+</div>
+
+From the plots we can see the relationship between the `Weight` and `Height` features and the model's predictions. We can see that the relationship between the `Height` and the model's predictions is linear and positive, which means that the body level metric increases as the `Height` increases. Since the slope of the line changes significantly at particular points i.e. the discontinuity or zig-zag shape, this may indicate the presence of a non-linear relationship or interaction effect between the feature and another feature. We can also see that the relationship between the `Weight` and the model's predictions is non-linear and negative, which means that the body level metric decreases as the `Weight` increases.
+
+#### Hyperparameter Tuning
+
+This is a process of adjusting the parameters of a model to optimize its performance. It can be done using techniques like grid search, random search, or Bayesian optimization.
+
+##### Grid Search
+
+For
+
+```python
+param_grid = {
+    'n_estimators': [5, 10, 20, 50, 100],
+    'max_depth': [10, 20, 50, 100, 500],
+    'min_samples_split': [2, 5, 10]
+}
+```
+
+We found that the best parameters are:
+
+```python
+Best parameters found: {'max_depth': 500, 'min_samples_split': 2, 'n_estimators': 100}
+```
+
+With training score: `0.9760627251729257` and test score: `0.9661259611331561`
+
+Here are some heatmap visualizations of the grid search results:
+<div style="display: flex; flex-direction: row; style="text-align:center"">
+<img src="figures/Random Forest/hyper_param_heat_maps_max_depth_min_samples_split.png" alt="hyper_param_heat_maps_max_depth_min_samples_split" width="500" height="400">
+<img src="figures/Random Forest/hyper_param_heat_maps_n_estimators_max_depth.png" alt="hyper_param_heat_maps_n_estimators_max_depth" width="500" height="400">
+<img src="figures/Random Forest/hyper_param_heat_maps_n_estimators_min_samples_split.png" alt="hyper_param_heat_maps_n_estimators_min_samples_split" width="500" height="400">
+</div>
+
+##### Train-Validation Curve
+
+Here are some Train-Validation Curves that we further used for the hyperparameter tuning process:
+
+<div style="display: flex; flex-direction: row; style="text-align:center"">
+<img src="figures/Random Forest/hyper_param_train_val_max_depth_[10, 20, 50, 100, 500].png" alt="hyper_param_train_val_max_depth_[10, 20, 50, 100, 500]" width="500" height="400">
+<img src="figures/Random Forest/hyper_param_train_val_min_samples_split_[2, 5, 10].png" alt="hyper_param_train_val_min_samples_split_[2, 5, 10]" width="500" height="400">
+<img src="figures/Random Forest/hhyper_param_train_val_n_estimators_[5, 10, 20, 50, 100].png" alt="hyper_param_train_val_n_estimators_[5, 10, 20, 50, 100]" width="500" height="400">
+</div>
+
+#### Bias-variance Analysis
+
+```yaml
+bias:  0.017826160337552743
+var:  0.00900928270042194
+```
+
+In our problem, we can see that the model has a low bias and a low variance, which means that it is well-fitted to the data and can generalize well to new, unseen data.
+<!-- TODO: Add the used params -->
+
+>> For more information on the Bias-variance tradeoff, read the [Bias-variance Tradeoff](#bias-variance-tradeoff) section in the appendix.
+
+#### Tree Plot
+A tree plot shows the structure of the decision trees used in the random forest. It can be used to understand how the model makes predictions.
+
+<div style="text-align:center">
+<img src="figures/Random Forest/tree_plot.png" alt="Random Forest tree_plot" width="500" height="400">
+</div>
+
+##### Variable importance
+
+The plot can show which variables (or features) are the most important in making the predictions. The importance of a feature is determined by how much the tree nodes that use that feature reduce impurity (i.e., increase homogeneity) in the samples they split which is shown in thr plot in the [gini value](#gini-value-in-a-random-forest-tree-plot). Features that are used more often and have a greater impact on reducing impurity are considered more important.
+
+We can see that the `Weight` feature reduces the impurity the most, followed by the `Height` feature. It is also used more often, which means that the `Weight` feature is the most important one.
+
+>> For more information on the Gini value, read the [Gini Value in a Random Forest Tree Plot](#gini-value-in-a-random-forest-tree-plot) section in the appendix.
+
+#### Interactions between features
+
+The plot can show how different features interact with each other to make predictions. For example, if two features are highly correlated, the plot can show whether the random forest is consistently using one feature over the other or if it's using both in combination.
+
+We can notice that the random forest is consistently using the `Weight` feature in the top levels and begin using a combination of the `Weight` and `Height` features in the lower levels. This indicates that the two features are highly correlated and that the random forest is using both features in combination to make predictions.
+
+#### Overfitting
+
+The plot can show whether the random forest is overfitting the training data. Overfitting can be identified if there are many shallow trees (i.e., with few splits) in the forest, indicating that the model is not capturing the underlying patterns in the data.
+
+We can see that the random forest is slightly overfitting the training data, as there are many shallow trees in the forest. This means that the model is not capturing the underlying patterns in the data and is instead fitting to the noise in the data.
 
 ## Conclusion
 
@@ -563,6 +716,11 @@ This is the same as the cost function with L2 regularization, where the regulari
 
 The L2 regularization term penalizes the magnitude of the coefficients of the model by adding a penalty term to the cost function. This penalty term is proportional to the square of the L2 norm of the coefficient vector. Mathematically, the L2 regularization term can be expressed as:
 
+### Gini Value in a Random Forest Tree Plot
+
+The Gini value in a random forest tree plot represents the impurity of a particular node in the decision tree. In a decision tree, each node represents a split on a feature that is used to separate the data into two or more subsets. The Gini value is a measure of the probability of misclassification of a random sample from the dataset. It ranges from 0 to 1, where 0 indicates that all the samples in the node belong to the same class, and 1 indicates that the samples are equally distributed across all classes.
+
+In the context of a random forest, the Gini value is calculated for each feature at each node in each tree of the forest. The feature with the lowest Gini value is selected as the split for that node. By doing this, the random forest can effectively identify the most important features for classification and make accurate predictions on new data. The Gini value can also be used to assess the overall performance of the random forest, with lower Gini values indicating better classification performance.
 ### Bias-variance Tradeoff
 
 Bias refers to the error that is introduced by approximating a real-world problem with a simplified model. A high bias model is one that is too simplistic and cannot capture the underlying patterns in the data. This often results in an underfit model that has high training error and poor performance on both the training and testing datasets. On the other hand, a low bias model is one that is complex enough to capture the underlying patterns in the data. This often results in a well-fitted model that has low training error and good performance on both the training and testing datasets.
