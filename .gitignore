@@ -2,4 +2,4 @@
 # add pycache
 *.pyc
 *__pycache__/
-
+*.pdf
