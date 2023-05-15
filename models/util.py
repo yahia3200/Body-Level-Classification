@@ -66,8 +66,10 @@ def getFeatureImportancePlot(feature_importance, save=True, modelname='model'):
     plt.xlabel('Features')
     plt.ylabel('Importance')
     plt.title('Feature Importance')
+    # increase the spacing between the title and the plot
+    plt.subplots_adjust(top=0.9)
     if save:
-        plt.savefig(f'../figures/{modelname}/feature_importance.png', dpi=300, bbox_inches='tight')
+        plt.savefig(f'../figures/{modelname}/feature_importance.png', dpi=1000, bbox_inches='tight')
     return plt
 
 # Learning Curves
@@ -102,7 +104,7 @@ def getLearningCurvePlot(estimator, X, y, cv=5, scoring='f1_macro', modelname='m
 
     plt.legend(loc='best')
     if save:
-        plt.savefig(f'../figures/{modelname}/learning_curve.png', dpi=300, bbox_inches='tight')
+        plt.savefig(f'../figures/{modelname}/learning_curve.png', dpi=1000, bbox_inches='tight')
     return plt
 
 # Partial Dependence Plot
@@ -120,7 +122,7 @@ def getPartialDependenciesPlot(estimator, X, modelname='model', save=True):
     fig.suptitle(f'Partial Dependence Plots for {modelname}')
     fig.tight_layout()
     if save:
-        plt.savefig(f'../figures/{modelname}/partial_dependencies.png', dpi=300, bbox_inches='tight')
+        plt.savefig(f'../figures/{modelname}/partial_dependencies.png', dpi=1000, bbox_inches='tight')
     return plt
 
 # Grid Search
@@ -153,7 +155,7 @@ def plotHyperParamHeatMaps(param_grid, grid_search, modelname='model', save=True
             sns.heatmap(heatmap_data, annot=True, cmap='coolwarm')
             plt.title(f"Validation f1_macro for {param1} and {param2} using {modelname}")
             if save:
-                plt.savefig(f'../figures/{modelname}/hyper_param_heat_maps_{param1}_{param2}.png', dpi=300, bbox_inches='tight')
+                plt.savefig(f'../figures/{modelname}/hyper_param_heat_maps_{param1}_{param2}.png', dpi=1000, bbox_inches='tight')
             plt.show()
 
 
@@ -185,7 +187,7 @@ def plotHyperParamTrainValidationCurve(estimator, param_grid, X, y, cv=10, scori
         plt.ylabel(scoring)
         plt.title(f'Bias-Variance Tradeoff for {param} using {modelname}')
         if save:
-            plt.savefig(f'../figures/{modelname}/hyper_param_train_val_{param}_{value}.png', dpi=300, bbox_inches='tight')
+            plt.savefig(f'../figures/{modelname}/hyper_param_train_val_{param}_{value}.png', dpi=1000, bbox_inches='tight')
         plt.show()
 
 
@@ -223,7 +225,6 @@ def getDecisionRegions(estimator, X, f1, f2, y, C=[0.001, 0.1, 10], modelname='m
     # create a decision boundary plot at 3 different C values
     fig, axes = plt.subplots(1, 3, figsize=(25, 6))
     formatter = plt.FuncFormatter(lambda val, loc: ['Body Level 1', 'Body Level 2', 'Body Level 3', 'Body Level 4'][val])
-    X = X[['Weight', 'Height']]
     for i, c in enumerate(C):
         estimator.set_params(C=c)
         estimator.fit(X, y)
@@ -232,5 +233,5 @@ def getDecisionRegions(estimator, X, f1, f2, y, C=[0.001, 0.1, 10], modelname='m
         plt.colorbar(contours, ticks =[0, 1, 2, 3],format=formatter)
     plt.title(f'Decision Regions using {modelname}')
     if save:
-        plt.savefig(f'../figures/{modelname}/decision_regions_for_{modelname}.png', dpi=300, bbox_inches='tight')
+        plt.savefig(f'../figures/{modelname}/decision_regions_for_{modelname}.png', dpi=1000, bbox_inches='tight')
     return plt
