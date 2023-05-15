@@ -202,19 +202,35 @@ def getBiasVariance(estimator, X_train, y_train, X_test, y_test):
         estimator, X_train=XX, y_train=yy, X_test=XX_test, y_test=yy_test, loss='mse', random_seed=42)
     return mse, bias, var
 
-def plot_decision_regions(model, X, y, ax):
-    model.fit(X.values, y)
-
+def _getDecisionContours(estimator, f1, f2, y, ax):
     # plot the decision boundary
-    x_min, x_max = X['Weight'].min() - 0.5, X['Weight'].max() + 0.5
-    y_min, y_max = X['Height'].min() - 0.1, X['Height'].max() + 0.1
+    x_min, x_max = f1.min() - 0.5, f1.max() + 0.5
+    y_min, y_max = f2.min() - 0.1, f2.max() + 0.1
     xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.1),
                             np.arange(y_min, y_max, 0.1))
 
-    Z = model.predict(np.c_[xx.ravel(), yy.ravel()])
+    Z = estimator.predict(np.c_[xx.ravel(), yy.ravel()])
     Z = Z.reshape(xx.shape)
 
     contours = ax.contourf(xx, yy, Z, alpha=0.4)
-    ax.scatter(X['Weight'], X['Height'], c=y, s=20, edgecolor='k')
+    ax.scatter(f1, f2, c=y, s=20, edgecolor='k')
 
     return contours
+def getDecisionRegions(estimator, X, f1, f2, y, C=[0.001, 0.1, 10], modelname='model', save=True):
+    # reset style to default
+    # plt.style.use('default')
+
+    # create a decision boundary plot at 3 different C values
+    fig, axes = plt.subplots(1, 3, figsize=(25, 6))
+    formatter = plt.FuncFormatter(lambda val, loc: ['Body Level 1', 'Body Level 2', 'Body Level 3', 'Body Level 4'][val])
+    X = X[['Weight', 'Height']]
+    for i, c in enumerate(C):
+        estimator.set_params(C=c)
+        estimator.fit(X, y)
+        contours = _getDecisionContours(estimator, f1, f2, y, axes[i])
+        axes[i].set_title('C = ' + str(c), size=15)
+        plt.colorbar(contours, ticks =[0, 1, 2, 3],format=formatter)
+    plt.title(f'Decision Regions using {modelname}')
+    if save:
+        plt.savefig(f'../figures/{modelname}/decision_regions_for_{modelname}.png', dpi=300, bbox_inches='tight')
+    return plt
