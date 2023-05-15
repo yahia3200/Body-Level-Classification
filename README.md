@@ -36,6 +36,8 @@
         - [Train-Validation Curve](#train-validation-curve-1)
       - [Bias-variance Analysis](#bias-variance-analysis-1)
       - [Decision Boundary Plot](#decision-boundary-plot-1)
+        - [Linear Kernel](#linear-kernel)
+        - [RBF Kernel](#rbf-kernel)
     - [Random Forest](#random-forest)
       - [Feature Importance Plot](#feature-importance-plot-2)
       - [Learning Curves Plot](#learning-curves-plot-2)
@@ -151,16 +153,17 @@ We can notice that the `Weight` and `Height` are significant features that carry
 
 All the analysis is made on the **Width** and **Height** features, as we have shown that they are the most significant and important ones.
 
+All models are validated using cross-validation with **10 folds**.
+
 ### Base Model
 
 Before working on developing sophisticated machine learning models, we used some dummy models to as a baseline model to compare the performance of more sophisticated models. By comparing the performance of a complex model to that of a simple model, we can determine if the complex model is actually providing useful predictions or if it is overfitting the data. Dummy models also help identify if the problem has any inherent bias or if the dataset is imbalanced. Overall, starting with a dummy model is a good way to get a baseline understanding of the data and the problem before moving on to more complex models.
 
-<!-- TODO: recalc based on the w and h only -->
-| Strategy   | Description  | Cross-validation with 10 folds   |
+| Strategy   | Description  | Cross-validation   |
 |:---: |:---: |:---: |
 | **most_frequent**  | The predict method always returns the most frequent class label in the observed y argument passed to fit. The predict_proba method returns the matching one-hot encoded vector.  | **accuracy**:  0.4589374732944025 **f1_macro**:  0.1572825648608684 **f1_micro**:  0.4589374732944025  |
-| **stratified**  | The predict_proba method randomly samples one-hot vectors from a multinomial distribution parametrized by the empirical class prior probabilities. The predict method returns the class label which got probability one in the one-hot vector of predict_proba. Each sampled row of both methods is therefore independent and identically distributed.  | **accuracy**:  0.32177040307648486 **f1_macro**:  0.24690614458225352 **f1_micro**:  0.32177040307648486  |
-| **uniform**  | Generates predictions uniformly at random from the list of unique classes observed in y, i.e. each class has equal probability  | **accuracy**:  0.23281583819968663 **f1_macro**:  0.21401372344564545 **f1_micro**:  0.23281583819968663  |
+| **stratified**  | The predict_proba method randomly samples one-hot vectors from a multinomial distribution parametrized by the empirical class prior probabilities. The predict method returns the class label which got probability one in the one-hot vector of predict_proba. Each sampled row of both methods is therefore independent and identically distributed.  | **accuracy**:  0.3014171770403077 **f1_macro**:  0.23061576938678968 **f1_micro**:  0.3014171770403077  |
+| **uniform**  | Generates predictions uniformly at random from the list of unique classes observed in y, i.e. each class has equal probability  | **accuracy**:  0.25400227887765275 **f1_macro**:  0.22286412555245022 **f1_micro**:  0.25400227887765275  |
 
 ### Logistic Regression
 
@@ -200,7 +203,9 @@ show the training error (Ein) and validation error (Eval) as a function of the t
 <img src="figures/Logistic Regression/learning_curve.png" alt="Logistic Regression Learning Curves Plot" width="500" height="400">
 </div>
 
-<!-- TODO: Add the used params -->
+```python
+Used parameters: {'C': 0.1, 'penalty': 'l2', 'solver': 'saga'}
+```
 
 The learning curves plot shows that the model is slightly overfitting the training data. The training error is lower than the validation error, which means that the model is not generalizing well to unseen data. This is a common problem with logistic regression models, and it can be addressed by using some techniques such as regularization as shown in the [Regularization](#regularization) section in the Appendix.
 
@@ -258,12 +263,15 @@ Here are some Train-Validation Curves that we further used for the hyperparamete
 #### Bias-variance Analysis
 
 ```yaml
-bias:  0.09540938818565402
-var:  0.024485126582278482
+bias:  0.09549356540084387
+var:  0.024400949367088608
+```
+
+```python
+Used parameters: {'C': 0.1, 'penalty': 'l2', 'solver': 'saga'}
 ```
 
 In our problem, we can see that the model has a low bias and a low variance, which means that it is well-fitted to the data and can generalize well to new, unseen data.
-<!-- TODO: Add the used params -->
 
 >> For more information on the Bias-variance tradeoff, read the [Bias-variance Tradeoff](#bias-variance-tradeoff) section in the appendix.
 
@@ -274,9 +282,16 @@ This is plot shows the decision boundary of the model. It can help visualize how
 <div style="text-align:center">
 <img src="figures/Logistic Regression/decision_regions_for_Logistic Regression.png" alt="Decision Boundary Plot" width="1100" height="250">
 </div>
-<!-- TODO: Add the used params -->
 
-<!-- TODO: Add a comment on this part -->
+```python
+Used parameters: {'C': c, 'penalty': 'l2', 'solver': 'saga'}
+```
+
+From the plots we can see that increasing the regularization parameter `C` results in better decision boundaries. This is because increasing the regularization parameter `C` increases the penalty for misclassifying data points, which means that the model becomes less likely to overfit the training data.
+
+We can also see that the decision boundaries are simple, that's because we have chosen the most significant features to work with.
+
+The plots also show the feature importance, the decision boundary is strongly influenced by the `Weight`, as we see a steep slope or abrupt change in the decision boundary around it. This emphasize our previous conclusion that the `Weight` feature is the most important feature.
 
 ### Support Vector Machines
 
@@ -316,7 +331,9 @@ show the training error (Ein) and validation error (Eval) as a function of the t
 <img src="figures/SVM/learning_curve.png" alt="SVM Learning Curves Plot" width="500" height="400">
 </div>
 
-<!-- TODO: Add the used params -->
+```python
+Used parameters: {`gamma`: 'auto', `kernel`: 'linear', `C`: 0.1, `random_state`: 0}
+```
 
 The learning curves plot shows that the model is slightly overfitting the training data. The training error is lower than the validation error, which means that the model is not generalizing well to unseen data. This is a common problem with logistic regression models, and it can be addressed by using some techniques such as regularization as shown in the [Regularization](#regularization) section in the Appendix.
 
@@ -349,10 +366,10 @@ param_grid = {
 We found that the best parameters are:
 
 ```python
-Best parameters found: {'C': 10, 'penalty': 'l1', 'solver': 'saga'}
+Best parameters found: {'C': 100, 'gamma': 0.1, 'kernel': 'rbf'}
 ```
 
-With training score: `0.973803108864967` and test score: `0.9729384514609276`
+With training score: `0.9818692700792588` and test score: `0.9915779695351935`
 
 Here are some heatmap visualizations of the grid search results:
 <div style="display: flex; flex-direction: row; style="text-align:center"">
@@ -374,10 +391,13 @@ Here are some Train-Validation Curves that we further used for the hyperparamete
 #### Bias-variance Analysis
 
 ```yaml
-bias:  0.09540938818565402
-var:  0.024485126582278482
+bias:  0.014956751054852323
+var:  0.004368143459915612
 ```
-<!-- TODO: Add the used params -->
+
+```python
+Used parameters: {'C': 100, 'gamma': 0.1, 'kernel': 'rbf'}
+```
 
 In our problem, we can see that the model has a low bias and a low variance, which means that it is well-fitted to the data and can generalize well to new, unseen data.
 
@@ -387,13 +407,30 @@ In our problem, we can see that the model has a low bias and a low variance, whi
 
 This is plot shows the decision boundary of the model. It can help visualize how the model separates the classes in the dataset
 
-<div style="text-align:center">
-<img src="figures/SVM/decision_regions_for_SVM.png" alt="Decision Boundary Plot" width="1100" height="250">
-</div>
-<!-- TODO: add plot for linear and rbf kernels -->
-<!-- TODO: Add the used params -->
+```python
+Used parameters: {'C': 100, 'gamma': 0.1, 'kernel': kernel}
+```
 
-<!-- TODO: Add a comment on this part -->
+##### Linear Kernel
+
+<div style="text-align:center">
+<img src="figures/SVM/decision_regions_for_SVM_linear.png" alt="decision_regions_for_SVM_linear" width="1100" height="250">
+</div>
+
+##### RBF Kernel
+
+<div style="text-align:center">
+<img src="figures/SVM/decision_regions_for_SVM_rbf.png" alt="decision_regions_for_SVM_rbf" width="1100" height="250">
+</div>
+
+From the plots we can see that increasing the regularization parameter `C` results in better decision boundaries. This is because increasing the regularization parameter `C` increases the penalty for misclassifying data points, which means that the model becomes less likely to overfit the training data.
+
+We can also see that the decision boundaries are simple, that's because we have chosen the most significant features to work with.
+
+The plots also show the feature importance, the decision boundary is strongly influenced by the `Weight`, as we see a steep slope or abrupt change in the decision boundary around it. This emphasize our previous conclusion that the `Weight` feature is the most important feature.
+
+We can notice that the choice of kernel in SVM affects the decision boundary and the classification performance of the model. Linear kernel assumes that the data is linearly separable in the feature space and constructs a decision boundary as a hyperplane that separates the two classes. On the other hand, RBF (Radial Basis Function) kernel is more flexible and can model non-linear decision boundaries.
+As we can see, the linear kernel SVM constructs a linear decision boundary that separates the two classes. However, it fails to capture the non-linear nature of the data. On the other hand, the RBF kernel SVM constructs a non-linear decision boundary that fits the data well and achieves a better classification performance.
 
 ### Random Forest
 
@@ -433,7 +470,9 @@ show the training error (Ein) and validation error (Eval) as a function of the t
 <img src="figures/Random Forest/learning_curve.png" alt="Random Forest Learning Curves Plot" width="500" height="400">
 </div>
 
-<!-- TODO: Add the used params -->
+```python
+used parameters: {'max_depth': 10, 'min_samples_split': 2, 'n_estimators': 30}
+```
 
 The learning curves plot shows that the model is slightly overfitting the training data. The training error is lower than the validation error, which means that the model is not generalizing well to unseen data. This is a common problem with Random Forest models, and it can be addressed by using some techniques such as regularization as shown in the [Regularization](#regularization) section in the Appendix.
 
@@ -474,10 +513,10 @@ param_grid = {
 We found that the best parameters are:
 
 ```python
-Best parameters found: {'max_depth': 500, 'min_samples_split': 2, 'n_estimators': 100}
+Best parameters found: {'max_depth': 50, 'min_samples_split': 2, 'n_estimators': 100}
 ```
 
-With training score: `0.9760627251729257` and test score: `0.9661259611331561`
+With training score: `0.9808867523232505` and test score: `0.9785079915117498`
 
 Here are some heatmap visualizations of the grid search results:
 <div style="display: flex; flex-direction: row; style="text-align:center"">
@@ -493,27 +532,35 @@ Here are some Train-Validation Curves that we further used for the hyperparamete
 <div style="display: flex; flex-direction: row; style="text-align:center"">
 <img src="figures/Random Forest/hyper_param_train_val_max_depth_[10, 20, 50, 100, 500].png" alt="hyper_param_train_val_max_depth_[10, 20, 50, 100, 500]" width="500" height="400">
 <img src="figures/Random Forest/hyper_param_train_val_min_samples_split_[2, 5, 10].png" alt="hyper_param_train_val_min_samples_split_[2, 5, 10]" width="500" height="400">
-<img src="figures/Random Forest/hhyper_param_train_val_n_estimators_[5, 10, 20, 50, 100].png" alt="hyper_param_train_val_n_estimators_[5, 10, 20, 50, 100]" width="500" height="400">
+<img src="figures/Random Forest/hyper_param_train_val_n_estimators_[5, 10, 20, 50, 100].png" alt="hyper_param_train_val_n_estimators_[5, 10, 20, 50, 100]" width="500" height="400">
 </div>
 
 #### Bias-variance Analysis
 
 ```yaml
-bias:  0.017826160337552743
-var:  0.00900928270042194
+bias:  0.018783016877637133
+var:  0.008242299578059073
 ```
 
 In our problem, we can see that the model has a low bias and a low variance, which means that it is well-fitted to the data and can generalize well to new, unseen data.
-<!-- TODO: Add the used params -->
+
+```python
+Used parameters: {'max_depth': 50, 'min_samples_split': 2, 'n_estimators': 100}
+```
 
 >> For more information on the Bias-variance tradeoff, read the [Bias-variance Tradeoff](#bias-variance-tradeoff) section in the appendix.
 
 #### Tree Plot
+
 A tree plot shows the structure of the decision trees used in the random forest. It can be used to understand how the model makes predictions.
 
 <div style="text-align:center">
 <img src="figures/Random Forest/tree_plot.png" alt="Random Forest tree_plot" width="500" height="400">
 </div>
+
+```python
+Used parameters: {'max_depth': 50, 'min_samples_split': 2, 'n_estimators': 100}
+```
 
 ##### Variable importance
 
@@ -540,7 +587,7 @@ We can see that the random forest is slightly overfitting the training data, as 
 After some data exploration, we noticed that there is an obvious relation between the target variable and the weight, and height as shown here:
 
 <div style="text-align:center">
-<img src="figures/equation/w_H_target.png" alt="The relation between the Body Level and the weight, height" width="500" height="400">
+<img src="figures/ThresholdClassifier/w_H_target.png" alt="The relation between the Body Level and the weight, height" width="500" height="400">
 </div>
 
 We tried to find the best formula that can represent this relation and decided to use the following formula and got some fascinating results:
@@ -548,9 +595,9 @@ We tried to find the best formula that can represent this relation and decided t
 $$weightOverHeightSquared = \frac{weight}{height^2}$$
 
 <div style="display: flex; flex-direction: row; style="text-align:center"">
-<img src="figures/equation/WH_target.png" alt="Body Level vs Weight over Height Squared" width="500" height="400" style="width:50%; margin-right: 10px;">
+<img src="figures/ThresholdClassifier/WH_target.png" alt="Body Level vs Weight over Height Squared" width="500" height="400" style="width:50%; margin-right: 10px;">
 
-<img src="figures/equation/WH_target_catplot.png" alt="Body Level vs Weight over Height Squared" width="500" height="400" style="width:50%; margin-left: 10px;">
+<img src="figures/ThresholdClassifier/WH_target_catplot.png" alt="Body Level vs Weight over Height Squared" width="600" height="400" style="width:50%; margin-left: 10px;">
 </div>
 
 **ThresholdClassifier:**
@@ -576,13 +623,11 @@ We undergone more research and found that that this metric is called BMI(Body Ma
 |  Overweight  |  25-29.9   |       Increased risk of health problems such as heart disease, stroke, type 2 diabetes, and certain types of cancer          |
 |   Obesity    |    30<     | Significantly increased risk of health problems such as heart disease, stroke, type 2 diabetes, and certain types of cancer  |
 
-<!-- TODO: don't use cross validation, use the whole data as test -->
-Henceforth, we decided to use the BMI thresholds to predict the body level and got the following results after running a cross-validation with 10 folds:
+Henceforth, we decided to use the BMI thresholds to predict the body level and got the following results after running on the full dataset:
 |  Metric  |  Value  |
 |:-------: |:---------: |
-|  accuracy   |  0.9864549209514315  |
-|  f1_macro   |  0.982450234501931  |
-|  f1_micro   |  0.9864549209514315  |
+|  accuracy   |  0.1693480101608806  |
+|  f1_score   |  0.09768666475902209  |
 
 ## Appendix
 
@@ -721,6 +766,7 @@ The L2 regularization term penalizes the magnitude of the coefficients of the mo
 The Gini value in a random forest tree plot represents the impurity of a particular node in the decision tree. In a decision tree, each node represents a split on a feature that is used to separate the data into two or more subsets. The Gini value is a measure of the probability of misclassification of a random sample from the dataset. It ranges from 0 to 1, where 0 indicates that all the samples in the node belong to the same class, and 1 indicates that the samples are equally distributed across all classes.
 
 In the context of a random forest, the Gini value is calculated for each feature at each node in each tree of the forest. The feature with the lowest Gini value is selected as the split for that node. By doing this, the random forest can effectively identify the most important features for classification and make accurate predictions on new data. The Gini value can also be used to assess the overall performance of the random forest, with lower Gini values indicating better classification performance.
+
 ### Bias-variance Tradeoff
 
 Bias refers to the error that is introduced by approximating a real-world problem with a simplified model. A high bias model is one that is too simplistic and cannot capture the underlying patterns in the data. This often results in an underfit model that has high training error and poor performance on both the training and testing datasets. On the other hand, a low bias model is one that is complex enough to capture the underlying patterns in the data. This often results in a well-fitted model that has low training error and good performance on both the training and testing datasets.

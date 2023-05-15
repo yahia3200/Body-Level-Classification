@@ -75,12 +75,12 @@ def getFeatureImportancePlot(feature_importance, save=True, modelname='model'):
 # Learning Curves
 
 
-def getLearningCurvePlot(estimator, X, y, cv=5, scoring='f1_macro', modelname='model', save=True):
+def getLearningCurvePlot(estimator, X, y, cv=5, scoring='f1_weighted', modelname='model', save=True):
     # It uses cross-validation with cv folds
     train_sizes, train_scores, test_scores = learning_curve(estimator, X, y, cv=cv,
                                                             train_sizes=np.linspace(
                                                                 .1, 1.0, 5),
-                                                            scoring='f1_macro', shuffle=True, random_state=42)
+                                                            scoring='f1_weighted', shuffle=True, random_state=42)
 
     train_scores_mean = np.mean(train_scores, axis=1)
     train_scores_std = np.std(train_scores, axis=1)
@@ -153,14 +153,14 @@ def plotHyperParamHeatMaps(param_grid, grid_search, modelname='model', save=True
 
             # Plot heatmap of validation accuracy for each hyperparameter combination
             sns.heatmap(heatmap_data, annot=True, cmap='coolwarm')
-            plt.title(f"Validation f1_macro for {param1} and {param2} using {modelname}")
+            plt.title(f"Validation f1_weighted for {param1} and {param2} using {modelname}")
             if save:
                 plt.savefig(f'../figures/{modelname}/hyper_param_heat_maps_{param1}_{param2}.png', dpi=1000, bbox_inches='tight')
             plt.show()
 
 
 # Train-Validation Curve
-def plotHyperParamTrainValidationCurve(estimator, param_grid, X, y, cv=10, scoring='f1_macro', modelname='model', save=True):
+def plotHyperParamTrainValidationCurve(estimator, param_grid, X, y, cv=10, scoring='f1_weighted', modelname='model', save=True):
 
     # iterate over the parameters and get the key and value pairs
     for param, value in param_grid.items():
@@ -225,13 +225,13 @@ def getDecisionRegions(estimator, X, f1, f2, y, C=[0.001, 0.1, 10], modelname='m
     # create a decision boundary plot at 3 different C values
     fig, axes = plt.subplots(1, 3, figsize=(25, 6))
     formatter = plt.FuncFormatter(lambda val, loc: ['Body Level 1', 'Body Level 2', 'Body Level 3', 'Body Level 4'][val])
+    plt.title(f'Decision Regions using {modelname}')
     for i, c in enumerate(C):
         estimator.set_params(C=c)
         estimator.fit(X, y)
         contours = _getDecisionContours(estimator, f1, f2, y, axes[i])
         axes[i].set_title('C = ' + str(c), size=15)
         plt.colorbar(contours, ticks =[0, 1, 2, 3],format=formatter)
-    plt.title(f'Decision Regions using {modelname}')
     if save:
         plt.savefig(f'../figures/{modelname}/decision_regions_for_{modelname}.png', dpi=1000, bbox_inches='tight')
     return plt
