@@ -201,3 +201,20 @@ def getBiasVariance(estimator, X_train, y_train, X_test, y_test):
     mse, bias, var = bias_variance_decomp(
         estimator, X_train=XX, y_train=yy, X_test=XX_test, y_test=yy_test, loss='mse', random_seed=42)
     return mse, bias, var
+
+def plot_decision_regions(model, X, y, ax):
+    model.fit(X.values, y)
+
+    # plot the decision boundary
+    x_min, x_max = X['Weight'].min() - 0.5, X['Weight'].max() + 0.5
+    y_min, y_max = X['Height'].min() - 0.1, X['Height'].max() + 0.1
+    xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.1),
+                            np.arange(y_min, y_max, 0.1))
+
+    Z = model.predict(np.c_[xx.ravel(), yy.ravel()])
+    Z = Z.reshape(xx.shape)
+
+    contours = ax.contourf(xx, yy, Z, alpha=0.4)
+    ax.scatter(X['Weight'], X['Height'], c=y, s=20, edgecolor='k')
+
+    return contours
