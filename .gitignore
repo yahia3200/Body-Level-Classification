@@ -1,1 +1,5 @@
 .vscode/settings.json
+# add pycache
+*.pyc
+*__pycache__/
+
