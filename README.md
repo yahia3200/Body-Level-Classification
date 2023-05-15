@@ -48,8 +48,8 @@
       - [Bias-variance Analysis](#bias-variance-analysis-2)
       - [Tree Plot](#tree-plot)
         - [Variable importance](#variable-importance)
-      - [Interactions between features](#interactions-between-features)
-      - [Overfitting](#overfitting)
+        - [Interactions between features](#interactions-between-features)
+        - [Overfitting](#overfitting)
   - [Conclusion](#conclusion)
   - [Appendix](#appendix)
     - [Regularization](#regularization)
@@ -105,8 +105,9 @@ We started by analyzing the distribution of the target variable and found an imb
 
 - We can find that the `Height` follows a normal distribution.
 - We can find that the `Age` feature is left skewed, we have more values for youth than the elders.
-- We can find that the `Veg_Consump`, `Water_Consump`, `Meal_Count`, `Phys_Act`, and `Tine_E_Dev` are capped to be integers.
-  
+- We can find that most of the `Veg_Consump`, `Water_Consump`, `Meal_Count`, `Phys_Act`, and `Tine_E_Dev` are rounded to be integers.
+- We can find that there's data capping in most of the features too.
+    
 >> Data capping is a technique used in data science to limit the maximum value of a variable in a dataset. This is often done to avoid the influence of outliers, or extreme values, that can skew the results of statistical analysis or machine learning models. By setting a cap, any values above that limit are truncated to the maximum value, allowing the analysis to focus on the most representative data points within the dataset. .
 
 <div style="text-align:center">
