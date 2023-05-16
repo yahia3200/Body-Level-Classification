@@ -200,9 +200,9 @@ Overall, logistic regression is a powerful tool for predicting categorical outco
 >>
 #### Feature Importance Plot
 
-To interpret the results of a logistic regression model, we can 
+To interpret the results of a logistic regression model, we can use the feature weights to determine the importance of each feature in the model and visualize the results.
 
-A feature importance plot shows the importance of each feature in the model. It can be used to identify the most important features and to understand the impact of each feature on the model's predictions.
+This feature importance plot shows the importance of each feature in the model to understand there impact on the model's predictions.
 
 <div style="text-align:center">
 <img src="figures/Logistic Regression/feature_importance.png" alt="Logistic Regression feature_importance" width="500" height="400">
@@ -210,7 +210,18 @@ A feature importance plot shows the importance of each feature in the model. It 
 
 Based on the feature importance graph, it seems that `Weight` has a much higher importance compared to `Height` for the logistic regression model. In fact, `Weight` accounts for approximately 79% of the importance, while "Height" only accounts for 21%.
 
-There are a few possible explanations for this. First, `Weight` is a more direct measure of body level than `Height`. Second,  `Weight` is more variable than `Height`, which means that it have a greater impact on the outcome variable.
+There are a few possible explanations for this. First, `Weight` is a more direct measure of body level than `Height`. Second,  `Weight` is more variable than `Height`, which means that it has a greater impact on the outcome variable.
+
+
+#### Partial Dependence Analysis
+
+A partial dependence plot shows the relationship between a feature and the model's predictions while holding all other features constant. It can be used to understand the impact of a single feature on the model's predictions i.e. PDPs show the average effect on predictions as the value of feature changes.
+
+<div style="text-align:center">
+<img src="figures/Logistic Regression/partial_dependencies.png" alt="Partial Dependence Plot" width="1000" height="400">
+</div>
+
+From the plots we can see the relationship between the `Weight` and `Height` features and the model's predictions. We can see that the relationship between the `Height` and the model's predictions is linear and positive, which means that the body level metric increases as the `Height` increases. We can also see that the relationship between the `Weight` and the model's predictions is non-linear and negative, which means that the body level metric decreases as the `Weight` increases.
 
 #### Learning Curves Plot
 
@@ -225,16 +236,6 @@ Used parameters: {'C': 0.1, 'penalty': 'l2', 'solver': 'saga'}
 ```
 
 The learning curves plot shows that the model is slightly overfitting the training data. The training error is lower than the validation error, which means that the model is not generalizing well to unseen data. This is a common problem with logistic regression models, and it can be addressed by using some techniques such as regularization as shown in the [Regularization](#regularization) section in the Appendix.
-
-#### Partial Dependence Plot
-
-A partial dependence plot shows the relationship between a feature and the model's predictions while holding all other features constant. It can be used to understand the impact of a single feature on the model's predictions i.e. PDPs show the average effect on predictions as the value of feature changes.
-
-<div style="text-align:center">
-<img src="figures/Logistic Regression/partial_dependencies.png" alt="Partial Dependence Plot" width="1000" height="400">
-</div>
-
-From the plots we can see the relationship between the `Weight` and `Height` features and the model's predictions. We can see that the relationship between the `Height` and the model's predictions is linear and positive, which means that the body level metric increases as the `Height` increases. We can also see that the relationship between the `Weight` and the model's predictions is non-linear and negative, which means that the body level metric decreases as the `Weight` increases.
 
 #### Hyperparameter Tuning
 
@@ -262,9 +263,7 @@ With training score: `0.9710438585061565` and test score: `0.966636441509922`
 
 Here are some heatmap visualizations of the grid search results:
 <div style="display: flex; flex-direction: row; style="text-align:center"">
-<img src="figures/Logistic Regression/hyper_param_heat_maps_C_solver.png" alt="hyper_param_heat_maps_C_solver" width="500" height="400">
-<img src="figures/Logistic Regression/hyper_param_heat_maps_penalty_C.png" alt="hyper_param_heat_maps_penalty_C" width="500" height="400">
-<img src="figures/Logistic Regression/hyper_param_heat_maps_penalty_solver.png" alt="hyper_param_heat_maps_penalty_solver" width="500" height="400">
+<img src="figures/Logistic Regression/hyper_param_heat_maps.png" alt="hyper_param_heat_maps" height="300">
 </div>
 
 ##### Train-Validation Curve

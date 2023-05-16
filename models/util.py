@@ -111,7 +111,7 @@ def getLearningCurvePlot(estimator, X, y, cv=5, scoring='f1_weighted', modelname
 
 
 def getPartialDependenciesPlot(estimator, X, modelname='model', save=True):
-    fig, ax = plt.subplots(figsize=(20, 20), )
+    fig, ax = plt.subplots(figsize=(15, 6), )
     target_class = 0  # specify the target class
     PartialDependenceDisplay.from_estimator(
         estimator, X, X.columns, ax=ax, target=target_class)
@@ -143,8 +143,10 @@ def plotHyperParamHeatMaps(param_grid, grid_search, modelname='model', save=True
     for param in param_grid:
         results[param] = results['params'].apply(lambda x: x[param])
     results.drop(columns=['params'], inplace=True)
-
+    vis_num = len(param_grid.keys())
+    fig, axes = plt.subplots(1, vis_num, figsize=(vis_num*5, 5))
     # Loop through all combinations of hyperparameters and plot heatmap of validation accuracy
+    index = 0
     for i, param1 in enumerate(param_grid.keys()):
         for j, param2 in enumerate(list(param_grid.keys())[i+1:]):
             heatmap_data = results.pivot_table(
@@ -152,11 +154,15 @@ def plotHyperParamHeatMaps(param_grid, grid_search, modelname='model', save=True
             heatmap_data.index = heatmap_data.index.astype(str)
 
             # Plot heatmap of validation accuracy for each hyperparameter combination
-            sns.heatmap(heatmap_data, annot=True, cmap='coolwarm')
-            plt.title(f"Validation f1_weighted for {param1} and {param2} using {modelname}")
-            if save:
-                plt.savefig(f'../figures/{modelname}/hyper_param_heat_maps_{param1}_{param2}.png', dpi=300, bbox_inches='tight')
-            plt.show()
+            sns.heatmap(heatmap_data, annot=True, cmap='coolwarm', ax=axes[index])
+            axes[index].set_title(f"{param1} and {param2}")
+            index += 1
+    # set title for the figure
+    fig.suptitle(f'Hyperparameter Heat Maps for {modelname}')
+    if save:
+        plt.savefig(f'../figures/{modelname}/hyper_param_heat_maps.png', dpi=300, bbox_inches='tight')
+    return plt
+            
 
 
 # Train-Validation Curve
