@@ -61,8 +61,7 @@
 ## Problem and Dataset Description
 
 We are solving a classification problem for human body level based on some given attributes related to the physical, genetic and habitual conditions. The given attributes are both categorical and continuous. The human body level can be categorized into (4 levels/classes).
-We are given 16 attributes and 1477 data samples, where classes are not evenly distributed. We are trying to build
-models that can adapt to the class imbalance to achieve the best possible results.
+We are given 16 attributes and 1477 data samples, where classes are not evenly distributed. We are trying to build models that can adapt to the class imbalance to achieve the best possible results.
 
 ## Exploratory Data Analysis
 
@@ -108,7 +107,7 @@ We started by analyzing the distribution of the target variable and found an imb
 - We can find that most of the `Veg_Consump`, `Water_Consump`, `Meal_Count`, `Phys_Act`, and `Tine_E_Dev` are rounded to be integers.
 - We can find that there's data capping in most of the features too.
     
->> Data capping is a technique used in data science to limit the maximum value of a variable in a dataset. This is often done to avoid the influence of outliers, or extreme values, that can skew the results of statistical analysis or machine learning models. By setting a cap, any values above that limit are truncated to the maximum value, allowing the analysis to focus on the most representative data points within the dataset. .
+>> Data capping is a technique used in data science to limit the maximum value of a variable in a dataset. This is often done to avoid the influence of outliers, or extreme values, that can skew the results of statistical analysis or machine learning models. By setting a cap, any values above that limit are truncated to the maximum value, allowing the analysis to focus on the most representative data points within the dataset.
 
 <div style="text-align:center">
 <img src="figures/dataset_analysis/numerical_features_distribution.png" alt="Numerical Features Distribution" width="800" height="600">
@@ -134,7 +133,7 @@ We can find that there' a correlation between the width and the height features 
 <img src="figures/dataset_analysis/correlation_matrix.png" alt="Correlation Matrix" width="800" height="600">
 </div>
 
-#### Numerical Feature Box Plot
+#### Relation Between Numerical Feature 
 
 We can notice that the `Weight` feature is an important and a significant feature. It carries a lot of predictive power and is highly correlated with the target variable. We can use it to build some models that can accurately predict the target variable.
 
