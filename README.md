@@ -125,28 +125,43 @@ We started by analyzing the distribution of the target variable and found an imb
 
 The multivariate analysis involves analyzing more than one variable to determine the relationship between them. It looks at the interactions between variables. It is used to identify patterns in the data set. It represents each variable in relation to all other variables.
 
-#### Correlation Matrix
+#### Correlation Analysis
 
-We can find that there' a correlation between the width and the height features which is expected.
+Correlation analysis allows us to assess the redundancy of certain features. If two features are highly correlated, they may provide similar information, and including both in our analysis could lead to overfitting or unnecessary complexity. Identifying and addressing such redundancies can help us streamline our feature selection process and improve the efficiency of our models.
 
 <div style="text-align:center">
 <img src="figures/dataset_analysis/correlation_matrix.png" alt="Correlation Matrix" width="800" height="600">
 </div>
 
-#### Relation Between Numerical Feature 
+One of the methods to measure the correlation between variables is the `person` correlation coefficient. It is a measure of the linear correlation between two variables X and Y. It has a value between +1 and −1, where 1 is total positive linear correlation, 0 is no linear correlation, and −1 is total negative linear correlation. It is widely used in the sciences as a measure of the strength of linear dependence between two variables. After visualizing the corr using a heatmap we can find that there is a correlation between the width and the height features which is expected.
 
-We can notice that the `Weight` feature is an important and a significant feature. It carries a lot of predictive power and is highly correlated with the target variable. We can use it to build some models that can accurately predict the target variable.
+
+#### Relation Between Gender and Body Level
+As we mentioned earlier that the `Gender` feature is the only categorical feature that can be  useful in our analysis. So we started by analyzing the relation between the `Gender` and the `Body_Level` features. We can find that the `Gender` feature is not a good predictor for our target variable because the Males and Females have almost the same distribution for the `Body_Level` feature.
+
+<div style="text-align:center">
+<img src="figures/dataset_analysis/gender_vs_target.png" alt="Correlation Matrix" width="800" height="600">
+</div>
+
+#### Relation Between Numerical Feature and Body Level
+
+In order to analyze the relation between the numerical features and the target variable we can visualize the distribution of the numerical features for each class of the target variable. If the distribution of the numerical feature is different for each class of the target variable then this feature is a good predictor for the target variable.
 
 <div style="text-align:center">
 <img src="figures/dataset_analysis/numerical_features_boxplot.png" alt="Numerical Feature Box Plot" width="800" height="600">
 </div>
 
-#### The relation between the features and the target variable
+We can notice that the `Weight` feature is an important and significant feature. It carries a lot of predictive power and is highly correlated with the target variable. We can use it to build some models that can accurately predict the target variable.
 
-We can notice that the `Weight` and `Height` are significant features that carry a lot of predictive power and are highly correlated with the target variable.. We can use them or a mix of them to build our models.
+
+#### The Pairwise Between The Features And The Target Variable
+
+One of the important analysis we can do during the EDA is to analyze the pairwise between the features. This analysis can help us to identify the most important features that can be used to build our models.
+
+We can notice that the `Weight` and `Height` are significant features that carry a lot of predictive power and are highly correlated with the target variable. We can use them or a mix of them to build our models.
 
 <div style="text-align:center">
-<img src="figures/dataset_analysis/features_pairplot.png" alt="Features Pair Plot" width="1200" height="1000">
+<img src="figures/dataset_  analysis/features_pairplot.png" alt="Features Pair Plot" width="1200" height="1000">
 </div>
 
 ## Models Analysis
@@ -184,6 +199,8 @@ Overall, logistic regression is a powerful tool for predicting categorical outco
 >> To learn more about the logistic regression parameters, check the [Logistic Regression Parameters](#logistic-regression-parameters) section in the Appendix.
 >>
 #### Feature Importance Plot
+
+To interpret the results of a logistic regression model, we can 
 
 A feature importance plot shows the importance of each feature in the model. It can be used to identify the most important features and to understand the impact of each feature on the model's predictions.
 
