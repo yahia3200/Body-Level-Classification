@@ -13,15 +13,16 @@
         - [Numerical Features Distribution](#numerical-features-distribution)
         - [Categorical Features Distribution](#categorical-features-distribution)
     - [Multivariate Analysis](#multivariate-analysis)
-      - [Correlation Matrix](#correlation-matrix)
-      - [Numerical Feature Box Plot](#numerical-feature-box-plot)
-      - [The relation between the features and the target variable](#the-relation-between-the-features-and-the-target-variable)
+      - [Correlation Analysis](#correlation-analysis)
+      - [Relation Between Gender and Body Level](#relation-between-gender-and-body-level)
+      - [Relation Between Numerical Feature and Body Level](#relation-between-numerical-feature-and-body-level)
+      - [The Pairwise Between The Features And The Target Variable](#the-pairwise-between-the-features-and-the-target-variable)
   - [Models Analysis](#models-analysis)
     - [Base Model](#base-model)
     - [Logistic Regression](#logistic-regression)
       - [Feature Importance Plot](#feature-importance-plot)
+      - [Partial Dependence Analysis](#partial-dependence-analysis)
       - [Learning Curves Plot](#learning-curves-plot)
-      - [Partial Dependence Plot](#partial-dependence-plot)
       - [Hyperparameter Tuning](#hyperparameter-tuning)
         - [Grid Search](#grid-search)
         - [Train-Validation Curve](#train-validation-curve)
@@ -30,7 +31,7 @@
     - [Support Vector Machines](#support-vector-machines)
       - [Feature Importance Plot](#feature-importance-plot-1)
       - [Learning Curves Plot](#learning-curves-plot-1)
-      - [Partial Dependence Plot](#partial-dependence-plot-1)
+      - [Partial Dependence Plot](#partial-dependence-plot)
       - [Hyperparameter Tuning](#hyperparameter-tuning-1)
         - [Grid Search](#grid-search-1)
         - [Train-Validation Curve](#train-validation-curve-1)
@@ -41,7 +42,7 @@
     - [Random Forest](#random-forest)
       - [Feature Importance Plot](#feature-importance-plot-2)
       - [Learning Curves Plot](#learning-curves-plot-2)
-      - [Partial Dependence Plot](#partial-dependence-plot-2)
+      - [Partial Dependence Plot](#partial-dependence-plot-1)
       - [Hyperparameter Tuning](#hyperparameter-tuning-2)
         - [Grid Search](#grid-search-2)
         - [Train-Validation Curve](#train-validation-curve-2)
@@ -351,7 +352,7 @@ show the training error (Ein) and validation error (Eval) as a function of the t
 Used parameters: {`gamma`: 'auto', `kernel`: 'linear', `C`: 0.1, `random_state`: 0}
 ```
 
-The learning curves plot shows that the model is slightly overfitting the training data. The training error is lower than the validation error, which means that the model is not generalizing well to unseen data. This is a common problem with logistic regression models, and it can be addressed by using some techniques such as regularization as shown in the [Regularization](#regularization) section in the Appendix.
+The learning curves plot shows that the model is slightly overfitting the training data. The training error is lower than the validation error, which means that the model is not generalizing well to unseen data. This is a common problem with logistic regression models, and it can be addressed by using some techniques such as regularization.
 
 #### Partial Dependence Plot
 
